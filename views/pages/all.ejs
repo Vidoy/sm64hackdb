@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>SM64Hacks Database - List of all hacks</title>
+  <% include ../partials/header.ejs %>
+</head>
+<body>
+
+  <% include ../partials/nav.ejs %>
+
+  <div class="container-fluid">
+    <div class="card bg-secondary text-white">
+        <div class="card-header">SM64Hacks Database - List of all hacks</div>
+        <div class="card-body">
+            <ul>
+                <% results.forEach((result) => { %>
+                    <li><a href="/view/<%= result._id %>"><%= result.meta.title %></a></li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="margin-bottom: 2%">
+      <a class="navbar-brand" href="/">SM64Hacks Database</a>
+
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a href="/" class="nav-link"><span class="fa fa-home"></span> Home</a>
+      </li>
+      <li class="nav-item">
+        <a href="/search" class="nav-link"><span class="fa fa-search"></span> Search</a>
+      </li>
+      <li class="nav-item">
+        <a href="/random" class="nav-link"><span class="fa fa-random"></span> Random Hack</a>
+      </li>
+      <li class="nav-item">
+        <a href="/all" class="nav-link"><span class="fa fa-archive"></span> All Hacks</a>
+      </li>
+      <li class="nav-item">
+        <a href="https://forums.sm64hacks.com/" class="nav-link"><span class="fa fa-users"></span> Forums</a>
+      </li>
+      <li class="nav-item">
+        <a href="/about" class="nav-link"><span class="fa fa-globe"></span> About</a>
+      </li>
+      <% if (canEdit === true) { %>
+        <li><a href="/admin" class="nav-link"><span class="fa fa-gears"></span> Admin</a></li>
+      <% } %>
+    </ul>
+    <ul class="nav navbar-nav ml-auto">
+      <% if (isLoggedIn == null) { %>
+        <li class="nav-item">
+            <a href="/accounts/register" class="nav-link"><span class="fa fa-user-plus"></span> Register</a>
+        </li>
+        <li class="nav-item">
+            <a href="/accounts/auth" class="nav-link"><span class="fa fa-key"></span> Login</a>
+        </li>
+        <% } else { %>
+          <li class="nav-item">
+              <a href="/session/destroy" class="nav-link"><span class="fa fa-lock"></span> Logout</a>
+          </li>
+        <% } %>
+    </ul>
+</nav>

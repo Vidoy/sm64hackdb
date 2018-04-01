@@ -1,0 +1,30 @@
+{
+  "name": "SM64HacksDB",
+  "version": "0.0.1",
+  "description": "A user searchable database of Super Mario 64 ROM Hacks",
+  "engines": {
+    "node": "8.9.1"
+  },
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "./node_modules/nodemon/bin/nodemon.js app.js"
+  },
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "connect-mongo": "^2.0.1",
+    "dotenv": "^5.0.1",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "express-session": "^1.15.6",
+    "express-validator": "^5.1.0",
+    "mongoose": "^5.0.12",
+    "nodemon": "^1.17.2"
+  },
+  "devDependencies": {
+    "request": "^2.81.0",
+    "tape": "^4.7.0"
+  },
+  "license": "BSD-3-Clause"
+}

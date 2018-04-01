@@ -1,0 +1,8 @@
+{
+  "name": "SM64Hacks DB",
+  "description": "A user searchable database of Super Mario 64 ROM Hacks",
+  "repository": "",
+  "logo": "",
+  "keywords": ["node", "express", "heroku"],
+  "image": "heroku/nodejs"
+}

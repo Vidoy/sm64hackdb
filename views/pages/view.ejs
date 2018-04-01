@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>SM64Hacks Database - <%= title %></title>
+  <% include ../partials/header.ejs %>
+</head>
+<body>
+
+  <% include ../partials/nav.ejs %>
+
+  <div class="container-fluid">
+    <div class="card bg-secondary text-white">
+        <div class="card-header">SM64Hacks Database - <%= title %> (By: <%= author %>)</div>
+        <div class="card-body">
+            <p>
+                <%=description%>
+            </p>
+            <hr />
+            <div class="row">
+                <div class="col-sm-4"><strong>Required Stars:</strong> <% if (requiredstars === -1 ) { %> Unknown <% } else { %> <%=requiredstars%> <% } %></div>
+                <div class="col-sm-4"><strong>Total Stars:</strong> <% if (totalstars === -1 ) { %> Unknown <% } else { %> <%=totalstars%> <% } %></div>
+                <div class="col-sm-4"><strong>Difficulty:</strong> <% if (difficulty === -1 ) { %> Unknown <% } else { %> <%=difficulty%> / 5 <% } %></div>
+            </div>
+            <hr />
+            <iframe width="560" height="315" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="display: block; margin: 0 auto;" src=<%=youtube%>></iframe>
+            <hr />
+            <div class="card">
+                <div class="card-header">Versions</div>
+                <div class="card-body">
+                    <ul>
+                        <% versionData.forEach((version) => { %>
+                            <li><%= version.versionString %>: <a href="https://gateway.ipfs.io/ipfs/<%= version.ipfsHash %>">https://gateway.ipfs.io/ipfs/<%= version.ipfsHash %></a></li>
+                        <% }) %>
+                    </ul>
+                    <% if (canEdit === true) { %>
+                    <hr /><a href="/edit/<%=id%>/versions/add">Add A Version</a>
+                    <% } %>
+                </div>
+            </div>
+            <% if (canEdit === true) { %>
+                <div class="card">
+                    <div class="card-header">Admin</div>
+                    <div class="card-body">
+                        <ul>
+                            <li><a href="/edit/<%=id%>">Edit Hack</a></li>
+                        </ul>
+                    </div>
+                </div>
+            <% } %>
+            <!-- <div class="card">
+                <div class="card-header">Screenshots</div>
+                <div class="card-body">
+                    <ul>
+                        
+                    </ul>
+                </div>
+            </div> -->
+        </div>
+    </div>
+  </div>
+
+</body>
+</html>
