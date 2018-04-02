@@ -1,5 +1,7 @@
 require('dotenv').config()
+require('newrelic')
 
+const PORT = process.env.PORT || 5000
 const express = require('express')
 const app = express()
 const path = require('path')
@@ -10,7 +12,6 @@ const MongoStore = require('connect-mongo')(session)
 const helmet= require('helmet')
 const { check, validationResult } = require('express-validator/check')
 const { matchedData, sanitize, sanitizeBody } = require('express-validator/filter')
-const PORT = process.env.PORT || 5000
 
 const User = require('./models/user')
 const Hack = require('./models/hack')
