@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>SM64Hacks Database - Add Link</title>
+  <% include ../partials/header.ejs %>
+</head>
+<body>
+
+  <% include ../partials/nav.ejs %>
+
+  <div class="container-fluid">
+    <div class="card bg-secondary text-white">
+        <div class="card-header">SM64Hacks Database - Add Link</div>
+        <div class="card-body">
+            <form action="/edit/<%=id%>/links/add" method="post">
+                <div class="form-group">
+                    <label for="linkname">Name:</label>
+                    <input type="text" class="form-control" name="linkname" required>
+                </div>
+                <div class="form-group">
+                    <label for="linklocation">Link Location:</label>
+                    <input type="text" class="form-control" name="linklocation" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -12,6 +12,11 @@ const Screenshot = new mongoose.Schema({
     key: {type: String, required: false}
 })
 
+const Link = new mongoose.Schema({
+    name: {type: String, required: false},
+    location: {type: String, required: false}
+})
+
 const HackSchema = new mongoose.Schema({
     meta: {
         title: {type: String, required: true, trim: false},
@@ -25,7 +30,8 @@ const HackSchema = new mongoose.Schema({
         difficulty: {type: Number, required: true, default: 0}
     },
     versions: [Version],
-    screenshots: [Screenshot]
+    screenshots: [Screenshot],
+    links: [Link]
 })
 HackSchema.index({'meta.title': 'text', 'meta.author': 'text'})
 

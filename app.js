@@ -166,6 +166,8 @@ app.get('/edit/:id', canEdit, function (req, res, next) {
     Hack.findById(req.params.id).exec(function (err, hack) {
         if (err) {
             return next(err)
+        } else if (!hack) {
+            res.status(404).json({error: "No such hack!"})
         } else {
             res.render('pages/edit', {isLoggedIn: req.session.userId, canEdit: req.session.canEdit, id: req.params.id, title: hack.meta.title, author: hack.meta.author, youtube: hack.meta.youtubeLink, description: hack.meta.description, requiredstars: hack.stars.requiredStars, totalstars: hack.stars.totalStars, difficulty: hack.stars.difficulty, versionData: hack.versions})
         }
@@ -219,6 +221,8 @@ app.get('/edit/:id/versions/add', canEdit, function (req, res, next) {
     Hack.findById(req.params.id).exec(function (err, hack) {
         if (err) {
             return next(err)
+        } else if (!hack) {
+            res.status(404).json({error: "No such hack!"})
         } else {
             res.render('pages/add-version', {isLoggedIn: req.session.userId, canEdit: req.session.canEdit, id: req.params.id})
         }
@@ -251,12 +255,64 @@ app.post('/edit/:id/versions/add', canEdit, [
 
 })
 
+app.get('/edit/:id/links/add', canEdit, function (req, res, next) {
+    Hack.findById(req.params.id).exec(function (err, hack) {
+        if (err) {
+            return next(err)
+        } else if (!hack) {
+            res.status(404).json({error: "No such hack!"})
+        } else {
+            res.render('pages/add-link', {isLoggedIn: req.session.userId, canEdit: req.session.canEdit, id: req.params.id})
+        }
+    })
+})
+
+app.post('/edit/:id/links/add', canEdit, [
+    check('linkname').isLength({min: 1}),
+    check('linklocation').isLength({min: 1})
+], function (req, res, next) {
+    if(!validationResult(req).isEmpty()){
+        return res.status(422).json({ validationResult: validationResult(req).mapped() })
+    }
+    const linkData = {
+        name: req.body.linkname,
+        location: req.body.linklocation
+    }
+
+    Hack.findById(req.params.id, function (err, hack) {
+        if (err) { return next(err) }
+        hack.links.push(linkData)
+        hack.set({links: hack.links})
+        hack.save(function (err, updatedHack){
+            if (err) { return next(err) }
+            res.redirect(`/view/${req.params.id}`)
+        })
+    })
+
+})
+
+app.get('/delete/:id', canEdit, function (req, res, next) {
+    res.render('pages/delete-hack', {isLoggedIn: req.session.userId, canEdit: req.session.canEdit, id: req.params.id})
+})
+
+app.post('/delete/:id',canEdit, function (req, res, next) {
+    Hack.findByIdAndRemove(req.params.id).exec(function (err, hack) {
+        if(err) {
+            return next(err)
+        } else {
+            res.redirect('/')
+        }
+    })
+})
+
 app.get('/view/:id', function (req, res, next) {
     Hack.findById(req.params.id).exec(function (err, hack) {
         if (err) {
             return next(err)
+        } else if (!hack) {
+            res.status(404).json({error: "No such hack!"})
         } else {
-            res.render('pages/view', {isLoggedIn: req.session.userId, canEdit: req.session.canEdit, id: req.params.id, title: hack.meta.title, youtube: hack.meta.youtubeLink, description: hack.meta.description, requiredstars: hack.stars.requiredStars, totalstars: hack.stars.totalStars, difficulty: hack.stars.difficulty, versionData: hack.versions, author: hack.meta.author})
+            res.render('pages/view', {isLoggedIn: req.session.userId, canEdit: req.session.canEdit, id: req.params.id, title: hack.meta.title, youtube: hack.meta.youtubeLink, description: hack.meta.description, requiredstars: hack.stars.requiredStars, totalstars: hack.stars.totalStars, difficulty: hack.stars.difficulty, versionData: hack.versions, linkData: hack.links, author: hack.meta.author})
         }
     })
 })

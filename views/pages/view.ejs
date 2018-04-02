@@ -26,21 +26,53 @@
             <iframe width="560" height="315" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="display: block; margin: 0 auto;" src="https://www.youtube-nocookie.com/embed/<%=youtube%>"></iframe>
             <% } %>
             <hr />
-            <div class="card">
-                <div class="card-header">Versions</div>
-                <div class="card-body">
-                    <ul>
-                        <% versionData.forEach((version) => { %>
-                            <li><%= version.versionString %>: <a href="https://gateway.ipfs.io/ipfs/<%= version.ipfsHash %>">https://gateway.ipfs.io/ipfs/<%= version.ipfsHash %></a></li>
-                        <% }) %>
-                    </ul>
-                    <% if (canEdit === true) { %>
-                    <hr /><a href="/edit/<%=id%>/versions/add">Add A Version</a>
-                    <% } %>
-                </div>
+            <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                                <div class="card-header">Versions</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <% versionData.forEach((version) => { %>
+                                            <li><%= version.versionString %>: <a href="https://gateway.ipfs.io/ipfs/<%= version.ipfsHash %>">https://gateway.ipfs.io/ipfs/<%= version.ipfsHash %></a></li>
+                                        <% }) %>
+                                    </ul>
+                                    <% if (canEdit === true) { %>
+                                    <hr /><a href="/edit/<%=id%>/versions/add">Add A Version</a>
+                                    <% } %>
+                                </div>                                
+                            </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-header">Related Links</div>
+                            <div class="card-body">
+                                <ul>
+                                    <% linkData.forEach((link) => { %>
+                                        <li><a target="_blank" href="<%= link.location %>"><%= link.name %></a></li>
+                                    <% }) %>                                    
+                                </ul>
+                                <% if (canEdit === true) { %>
+                                <hr /><a href="/edit/<%=id%>/links/add">Add Link</a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-header">Screenshots</div>
+                            <div class="card-body">
+                                <ul>
+
+                                </ul>
+                                <% if (canEdit === true) { %>
+                                <hr /><a href="#">Upload Screenshot</a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div> -->
             </div>
             <% if (canEdit === true) { %>
-                <div class="card">
+                <div class="card" style="margin-top: 2%">
                     <div class="card-header">Admin</div>
                     <div class="card-body">
                         <ul>
