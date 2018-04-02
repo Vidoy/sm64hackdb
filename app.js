@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
+const helmet= require('helmet')
 const { check, validationResult } = require('express-validator/check')
 const { matchedData, sanitize, sanitizeBody } = require('express-validator/filter')
 const PORT = process.env.PORT || 5000
@@ -38,6 +39,22 @@ app.use(session({
 }))
 
 /*
+    Set security headers
+*/
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", 'maxcdn.bootstrapcdn.com'],
+        styleSrc: ["'self'", "'unsafe-inline'", 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com', 'fonts.gstatic.com'],
+        fontSrc: ["'self'", 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com', 'fonts.gstatic.com'],
+        frameSrc: ['www.youtube.com', 'www.youtube-nocookie.com']
+    }
+}))
+app.use(helmet.referrerPolicy({
+    policy: 'same-origin'
+}))
+
+/*
     Parse incoming requests
 */
 app.use(bodyParser.json())
@@ -64,12 +81,12 @@ app.get('/about', function (req, res) {
 })
 
 app.get('/all', function (req, res, next) {
-    Hack.find({}, {}, function (err, hack) {
+    Hack.find({}, {}, {skip: 0, limit: 0, sort:{meta: 1}}, function (err, hack) {
         if (err) {
             return next(err)
         }
         res.render('pages/all', {isLoggedIn: req.session.userId, canEdit: req.session.canEdit, results: hack})
-    })
+    }).sort('meta.title')
 })
 
 app.get('/random', function (req, res) {
@@ -103,11 +120,9 @@ app.get('/add', canEdit, function (req, res) {
 })
 
 app.post('/add', canEdit, [
-    sanitize('title').escape(),
     check('title').isLength({min: 1, max: 128}),
     sanitize('author').escape(),
     check('author').isLength({min: 1, max: 128}),
-    sanitize('description').escape(),
     check('description').isLength({min: 1, max: 10000}),
     sanitize('youtube').escape(),
     check('youtube').isLength({min: 1}),
@@ -157,11 +172,9 @@ app.get('/edit/:id', canEdit, function (req, res, next) {
 })
 
 app.post('/edit/:id', canEdit, [
-    sanitize('title').escape(),
     check('title').isLength({min: 1, max: 128}),
     sanitize('author').escape(),
     check('author').isLength({min: 1, max: 128}),
-    sanitize('description').escape(),
     check('description').isLength({min: 1, max: 10000}),
     sanitize('youtube').escape(),
     check('youtube').isLength({min: 1}),
@@ -242,7 +255,7 @@ app.get('/view/:id', function (req, res, next) {
         if (err) {
             return next(err)
         } else {
-            res.render('pages/view', {isLoggedIn: req.session.userId, canEdit: req.session.canEdit, id: req.params.id, title: hack.meta.title, youtube: "https://www.youtube.com/embed/" + hack.meta.youtubeLink, description: hack.meta.description, requiredstars: hack.stars.requiredStars, totalstars: hack.stars.totalStars, difficulty: hack.stars.difficulty, versionData: hack.versions, author: hack.meta.author})
+            res.render('pages/view', {isLoggedIn: req.session.userId, canEdit: req.session.canEdit, id: req.params.id, title: hack.meta.title, youtube: hack.meta.youtubeLink, description: hack.meta.description, requiredstars: hack.stars.requiredStars, totalstars: hack.stars.totalStars, difficulty: hack.stars.difficulty, versionData: hack.versions, author: hack.meta.author})
         }
     })
 })
