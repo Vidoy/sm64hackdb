@@ -31,7 +31,8 @@ const HackSchema = new mongoose.Schema({
     },
     versions: [Version],
     screenshots: [Screenshot],
-    links: [Link]
+    links: [Link],
+    isDeleted: {type: Boolean, required: false, default: false}
 })
 HackSchema.index({'meta.title': 'text', 'meta.author': 'text'})
 
