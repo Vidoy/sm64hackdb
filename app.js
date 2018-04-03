@@ -72,6 +72,7 @@ app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
+app.set('json spaces', 40)
 
 app.get('/', function (req, res) {
     res.render('pages/index', {isLoggedIn: req.session.userId, canEdit: req.session.canEdit})
